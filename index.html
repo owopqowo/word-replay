@@ -19,10 +19,18 @@
   const word = document.querySelector('#word');
   let orderNum = 0;
   let wordCheck = false;
+  let personCheck = false;
 
-
-  const person = parseInt(prompt('몇 명이 참여하나요?'));
-  const personCheck = confirm(`${person}명이 맞나요?`);
+  while (!personCheck) {
+    const person = prompt('몇 명이 참여하나요?');
+    if (person && parseInt(person) >= 2) {
+      const personconfirm = confirm(`${parseInt(person)}명이 맞나요?`);
+      personconfirm ? personCheck = true : personCheck = false;
+    } else {
+      parseInt(person) < 2 ? alert('2명 이상 참여 가능합니다!') : alert('숫자를 입력해주세요!');
+      personCheck = false;
+    }
+  }
   
   function orderChecked(num) {
     order.textContent = num;
