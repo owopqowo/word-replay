@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>끝말잇기</title>
+</head>
+<body>
+  <div><span id="order">1</span>번째 참가자</div>
+  <div>제시어 : <span id="word"></span></div>
+  <input type="text">
+  <button type="button" class="btn">입력</button>
+</body>
+<script>
+
+  const input = document.querySelector('input');
+  const btn = document.querySelector('.btn');
+  const order = document.querySelector('#order');
+  const word = document.querySelector('#word');
+  let orderNum = 0;
+  let wordCheck = false;
+
+
+  const person = parseInt(prompt('몇 명이 참여하나요?'));
+  const personCheck = confirm(`${person}명이 맞나요?`);
+  
+  function orderChecked(num) {
+    order.textContent = num;
+  }
+
+  function inputInit(el) {
+    el.value = '';
+    el.focus();
+  }
+
+  function wordChecked(firstWord, lastWord) {
+    const firstWordLength = firstWord.length;
+    firstWord[firstWordLength - 1] === lastWord[0] ? wordCheck = true : wordCheck = false;
+  }
+  
+  btn.addEventListener('click', () => {
+    wordChecked(word.textContent, input.value);
+    if(!word.textContent || wordCheck) {
+      orderNum + 1 >= person ? orderNum = 0 : orderNum++;
+      orderChecked(orderNum + 1);
+      word.textContent = input.value;
+      inputInit(input);
+    } else {
+      alert('올바르지 않는 단어입니다.');
+    }
+  });
+
+</script>
+</html>
