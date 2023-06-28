@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>쿵쿵따</title>
+</head>
+<body>
+  <div><span id="order">1</span>번째 참가자</div>
+  <div>제시어 : <span id="word"></span></div>
+  <input type="text" id="input">
+  <button type="button" id="btn-confirm">확인</button>
+  <button type="button" id="btn-restart">재시작</button>
+</body>
+<script>
+  const order = document.querySelector('#order');
+  const word = document.querySelector('#word');
+  const input = document.querySelector('#input');
+  const btnConfirm = document.querySelector('#btn-confirm');
+  const btnRestart = document.querySelector('#btn-restart');
+
+  const wordLengthNum = 3;
+
+  let personNum = 0;
+  let orderNum = 0;
+  let personCheck = false;
+
+  settings();
+
+  btnConfirm.addEventListener('click', () => {
+    const wordLengthCheck = wordLengthChecked(input, wordLengthNum);
+    const wordsCheck = wordsChecked(word.textContent, input.value);
+    if(!wordLengthCheck) {
+      alert(`${wordLengthNum}글자가 아니예요`)
+    } else if (!wordsCheck && word.textContent) {
+      alert('제시어의 마지막 글자와 일치하지 않아요');
+    } else {
+      word.textContent = input.value;
+      if(orderNum + 1 >= personNum) {
+        orderNum = 0;
+      } else {
+        orderNum++
+      }
+      order.textContent = orderNum + 1;
+      input.value = '';
+      input.focus();
+    }
+  });
+
+  btnRestart.addEventListener('click', init);
+
+  function init() {
+    personNum = 0;
+    orderNum = 0;
+    personCheck = false;
+    settings();
+    order.textContent = '1';
+    word.textContent = '';
+    input.value = '';
+  }
+
+  function settings() {
+    while (!personCheck) {
+      const person = prompt('참여 인원을 입력해 주세요');
+      personNum = parseInt(person);
+      if (person && personNum >= 2) {
+        const personConfirm = confirm(`${personNum}명이 맞나요?`);
+        personConfirm ? personCheck = true : personCheck = false;
+      } else {
+        personNum < 2 ? alert('2명 이상이어야 참여가 가능해요') : alert('숫자를 입력해 주세요');
+        personCheck = false;
+      }
+    }
+    return personNum;
+  }
+
+  function wordLengthChecked(input, num) {
+    return input.value.length === num ? true : false;
+  }
+
+  function wordsChecked(firstWord, lastWord) {
+    const firstWordLength = firstWord.length;
+    return firstWord[firstWordLength -1] === lastWord[0] ? true : false;
+  }
+</script>
+</html>
